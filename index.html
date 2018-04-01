@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by anonymous (http://jsbin.com/cemekarizu/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<meta name="robots" content="noindex">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<style id="jsbin-css">
+input{
+  width:300px;
+}
+button{
+  width:100px;
+}
+</style>
+</head>
+<body>
+ <input type="text" id="cell" disabled>
+ <button onclick="openNav()">Сгенерировать массив</button>
+<div>
+<button onclick="in1()">Insertion Sort</button>
+  <input type="text" id="cell1">
+  <br>
+  <button onclick="in2()">Selection sort</button>
+  <input type="text" id="cell2">
+  <br>
+  <button onclick="in3()">Merge sort</button>
+  <input type="text" id="cell3">
+  <br>
+  <button onclick="in4()">Heap sort</button>
+  <input type="text" id="cell4">
+  <br>
+  <button onclick="in5()">Quicksort</button>
+  <input type="text" id="cell5">
+  <br>
+  <button onclick="in6()">Bubble sort</button>
+  <input type="text" id="cell6">
+  <br>
+  <button onclick="in7()">Shellsort</button>
+  <input type="text" id="cell7">
+  <br>
+  <button onclick="in8()">Comb sort</button>
+  <input type="text" id="cell8">
+  <br>
+  <button onclick="in9()">Counting sort</button>
+  <input type="text" id="cell9">
+  <br>
+  <button onclick="in10()">Bucket sort</button>
+  <input type="text" id="cell10">
+  <br>
+  <button onclick="in11()">Radix sort</button>
+  <input type="text" id="cell11">
+  <br>
+  <button onclick="in12()">Tree sort</button>
+  <input type="text" id="cell12">
+  <br>
+  <button onclick="in13()">Bogosort</button>
+  <input type="text" id="cell13">
+  <br>
+
+ </div>
+  <script>
+   var array0;
+  function randArr(maxLength)//создание рандомного массива
+{
+  var len = Math.floor(Math.random() * maxLength)
+  var arr = new Array(len > 4 ? len : 4)
+  for (var i = 0; i < arr.length; i++){
+    arr[i] = Math.floor(Math.random() * 500)}
+  array0=arr;
+    
+  return arr
+}   
+  //отображение неотс. массива, с которым будет произведено изменение
+  function openNav() {
+    var array=randArr(10);
+        document.getElementById("cell").value = array;
+}  
+    
+    //считывание массива, еще не сортированного, из input
+  function inner(){
+var mas=[]; 
+    mas=document.getElementById("cell").value.split(',');     
+    var array=[];
+    for(i=0;i<mas.length;i++){array[i]=Number(mas[i]);}
+    return array;
+}
+    
+    //Insertion
+    
+    function insertion(mas){
+      for (var i = 0; i < mas.length; i++) {
+   let value = mas[i]
+    for (var j = i - 1; j > -1 && mas[j] > value; j--) {
+      mas[j + 1] = mas[j]
+    }
+    mas[j + 1] = value
+  }
+      return mas;
+    }
+function in1(){
+var mas=[]; 
+    mas=inner();
+  mas=insertion(mas);
+
+  document.getElementById("cell1").value = mas;
+  
+}
+   
+    //Selection
+    function in2() {
+      var mas=[];
+      mas=inner();
+	var length = mas.length;
+	for (var i = 0; i < length - 1; i++) {
+		var min = i;
+		for (var j = i + 1; j < length; j++) {
+			if (mas[j] < mas[min]) {
+				min = j;
+			}
+		}
+		if (min != i) { 
+          swap(mas, i, min);
+		}
+	}
+  document.getElementById("cell2").value =mas;
+    }
+    
+    
+    //Merge
+    function in3(){
+var mas=[]; 
+    mas=inner();
+    mas=mergeSort(mas);  
+    
+        document.getElementById("cell3").value = mas;
+}
+    
+      function mergeSort(arr)
+{
+    if (arr.length < 2)
+        return arr;
+ 
+    var middle = parseInt(arr.length / 2);
+    var left   = arr.slice(0, middle);
+    var right  = arr.slice(middle, arr.length);
+ 
+    return merge(mergeSort(left), mergeSort(right));
+}
+    function merge(left, right)
+{
+    var result = [];
+ 
+    while (left.length && right.length) {
+        if (left[0] <= right[0]) {
+            result.push(left.shift());
+        } else {
+            result.push(right.shift());
+        }
+    }
+ 
+    while (left.length)
+        result.push(left.shift());
+ 
+    while (right.length)
+        result.push(right.shift());
+ 
+    return result;
+}
+//heap
+    
+    var array_length;
+function heap_root(input, i) {
+    var left = 2 * i + 1;
+    var right = 2 * i + 2;
+    var max = i;
+
+    if (left < array_length && input[left] > input[max]) {
+        max = left;
+    }
+
+    if (right < array_length && input[right] > input[max])     {
+        max = right;
+    }
+
+    if (max != i) {
+        swap(input, i, max);
+        heap_root(input, max);
+    }
+}
+
+function swap(input, index_A, index_B) {
+    var temp = input[index_A];
+
+    input[index_A] = input[index_B];
+    input[index_B] = temp;
+}
+
+    
+    
+    function in4(){
+var mas=[]; 
+    mas=inner();
+    array_length = mas.length;
+
+    for (var i = Math.floor(array_length / 2); i >= 0; i -= 1)      {
+        heap_root(mas, i);
+      }
+
+    for (i = mas.length - 1; i > 0; i--) {
+        swap(mas, 0, i);
+        array_length--;
+      
+      
+        heap_root(mas, 0);
+    }
+        document.getElementById("cell4").value = mas;
+}
+    
+    
+    //Quick
+    function quick(arr, left, right)
+	{
+		if (left < right)
+		{
+			var pivot = arr[right], i = left - 1
+
+			for (var j = left; j <= right - 1; j++)
+			{
+				if (arr[j] <= pivot)
+				{
+					i++
+                    swap(arr, j, i);
+				}
+			}
+          swap(arr, i+1, right);
+			var pt =  (i + 1)
+
+			quick(arr, left, pt - 1)
+			quick(arr, pt + 1, right)
+		}
+	}
+ 
+    function in5(){
+var mas=[]; 
+    mas=inner();
+        var len = mas.length
+	quick(mas, 0, len - 1)
+	//return mas;
+        document.getElementById("cell5").value = mas;
+}
+    
+    //Bubble
+    function in6(){
+var mas=[]; 
+    mas=inner();
+    var len = mas.length;
+      for (var i = 0; i < len ; i++) {
+        for(var j = 0 ; j < len - i - 1; j++){ // this was missing
+        if (mas[j] > mas[j + 1]) {
+          swap(mas,j,j+1);
+        }
+       }
+      }
+        document.getElementById("cell6").value = mas;
+}
+    //Shell
+    function in7(){
+var mas=[]; 
+    mas=inner();
+      
+      
+       var increment = mas.length / 2;
+    while (increment > 0) {
+        for (i = increment; i < mas.length; i++) {
+            var j = i;
+            var temp = mas[i];
+    
+            while (j >= increment && mas[j-increment] > temp) {
+                mas[j] = mas[j-increment];
+                j = j - increment;
+            }
+            mas[j] = temp;
+        }
+        if (increment == 2) {
+            increment = 1;
+        } else {
+            increment = parseInt(increment*5 / 11);
+        }
+    }
+        document.getElementById("cell7").value = mas;
+}
+    //Comb
+    
+    function is_array_sorted(arr) {
+      var sorted = true;
+      for (var i = 0; i < arr.length - 1; i++) {
+          if (arr[i] > arr[i + 1]) {
+              sorted = false;
+              break;
+          }
+      }
+      return sorted;
+  }
+    function in8(){
+var mas=[];
+    mas=inner();
+  var iteration_count = 0;
+  var gap = mas.length - 2;
+  var decrease_factor = 1.25; 
+  while (!is_array_sorted(mas)) 
+  {
+      if (iteration_count > 0)
+         gap = (gap == 1) ? gap : Math.floor(gap / decrease_factor);
+       var front = 0;
+      var back = gap;
+      while (back <= mas.length - 1) 
+      {        
+          if (mas[front] > mas[back])
+          {
+            swap(mas,front,back);
+          }
+          front += 1;
+          back += 1;
+      }
+      iteration_count += 1;
+  }         
+        document.getElementById("cell8").value = mas;
+}
+    //Counting
+    function in9(){
+var mas=[]; 
+    mas=inner();
+      var n = mas.length, count = [], sortArr = [];
+	for (var i = 0; i < n; i++) 
+		count[ i ] = 0;
+	for (var i = 0; i < n-1; i++)
+	{ 
+		for (var j = i+1; j < n; j++)
+		{ 
+			if (mas[ i ] < mas[j]) 
+	  			count[j]++;
+			else 
+	  			count[ i ]++;
+		}
+	}
+	for (var i = 0; i < n; i++) 
+		sortArr[count[ i ]] = mas[ i ];
+        document.getElementById("cell9").value = sortArr;
+}
+    //Bucket
+    
+    function in10(){
+var mas=[]; 
+    mas=inner();
+      var b=[],indexes=[];
+      for(i=0;i<10;i++)
+      {b[i]=[];indexes[i]=0;}
+var n = mas.length;
+  var min = mas[0];
+  var max = min;
+  for (i = 1; i <n; ++i) {//находим минимум и максимум
+      if (mas[i] > max) max = mas[i];
+      if (mas[i] < min) min = mas[i];
+  }
+   var divider = Math.ceil((max+1)/10);
+    for(i=0;i<n;i++)
+      {
+        j=Math.floor(mas[i]/divider);
+        b[j][indexes[j]]=mas[i];
+        indexes[j]=indexes[j]+1;
+      }
+  for(i=0;i<10;i++)
+     {
+       b[i]=insertion(b[i]);
+     }
+  var index2=0;
+   for(i=0;i<10;i++)
+     {
+       if(b[i].length!=0){
+     for(j=0;j<b[i].length;j++){
+    mas[index2]=b[i][j];   
+    index2=index2+1;   
+     }                      
+     } 
+     }
+        document.getElementById("cell10").value = mas;
+}
+    //Radix
+    function in11(){
+var mas=[],indexes=[]; 
+    mas=inner();
+      var b=[];
+      for(i=0;i<10;i++)
+      {b[i]=[];}
+var n = mas.length;
+  var max = mas[0];
+  for (i = 1; i <n; ++i) {//находим максимум
+   if (mas[i] > max) max = mas[i]; }
+ var digits=countDigits(max);
+      var s=0;
+      for(j=0;j<digits;j++){if(j==0){s=1;}else{s=s*10;}}
+      //alert(max);alert(digits);alert(s);
+      for(prohod=1;prohod<=digits;prohod++){//проход
+       //alert("prohod "+prohod) ;var st=0;
+     for(i=0;i<10;i++)
+      {indexes[i]=0;}
+        for(elem=0;elem<n;elem++){//проход по элементам
+          var ch=Math.floor(mas[elem]/1),cif;
+       //   alert(ch+'~');
+              cif=ch % 10;
+              ch=Math.floor(ch/10);
+          //    alert(ch+"ch");alert(cif+"cif");
+           mas[elem]=mas[elem]/10;
+        b[cif][indexes[cif]]=mas[elem];
+        indexes[cif]=indexes[cif]+1;  
+       // mas[elem]=mas[elem]/10;  
+        }//проход по элементам
+        //for(ind=0;ind<10;ind++){alert(b[ind]);}
+        var index2=0;
+      for(i=0;i<10;i++)
+     {
+       if(indexes[i]!=0){
+     for(j=0;j<indexes[i];j++){
+    mas[index2]=b[i][j];   
+    index2=index2+1;   
+     }                      
+     } 
+     }  
+        // for(ind=0;ind<10;ind++){alert(b[ind]);}      
+       // alert(mas);
+      }//конец прохода
+        for(i=0;i<n;i++){mas[i]=Math.round(mas[i]*s*10);} 
+        document.getElementById("cell11").value = mas;
+}
+    
+    function countDigits(n) {
+   for(var i = 0; n > 1; i++) {
+      n /= 10;
+   }
+   return i;
+}
+    
+    //Tree
+    
+    
+function addItem(tree, item)
+{
+	if (tree.length == 0)
+	{
+		tree.push(item);
+		tree.push([]);
+		tree.push([]);
+	}
+	else 
+		if (item > tree[0])
+			addItem(tree[2],item)
+		else
+			addItem(tree[1],item)
+}
+
+function treeToArray(tree)
+{
+	if (tree.length == 0)
+		return []
+	else 
+		return treeToArray(tree[1]).concat(tree[0],treeToArray(tree[2]))
+}
+
+function treeSort(arr)
+{
+	var len = arr.length
+	var tree = []
+
+	for (var i = 0; i < len; i++)
+		addItem(tree,arr[i])
+
+	arr = treeToArray(tree)
+
+	return arr
+}
+    
+    function in12(){
+var mas=[]; 
+    mas=inner();
+    mas=treeSort(mas);
+        document.getElementById("cell12").value = mas;
+}
+    //Bogo
+    
+    function Bogosort(arr){
+    var isSorted = function(arr){
+        for(var i = 1; i < arr.length; i++){
+            if (arr[i-1] > arr[i]) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    function shuffle(arr){
+        var count = arr.length, temp, index;
+
+        while(count > 0){
+            index = Math.floor(Math.random() * count);
+            count--;
+
+            temp = arr[count];
+            arr[count] = arr[index];
+            arr[index] = temp;
+        }
+
+        return arr;
+    }
+
+   function sort(arr){
+        var sorted = false;
+        while(!sorted){
+            arr = shuffle(arr);
+            sorted = isSorted(arr);
+        }
+        return arr;
+    }
+
+    return sort(arr);
+}
+
+    
+    
+    function in13(){
+var mas=[]; 
+    mas=inner();
+      mas=Bogosort(mas);
+      document.getElementById("cell13").value = mas;
+}
+  </script>
+</body>
+</html> 
