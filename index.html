@@ -450,47 +450,57 @@ var n = mas.length;
     
     //Tree
     
-    
-function addItem(tree, item)
-{
-	if (tree.length == 0)
-	{
-		tree.push(item);
-		tree.push([]);
-		tree.push([]);
-	}
-	else 
-		if (item > tree[0])
-			addItem(tree[2],item)
-		else
-			addItem(tree[1],item)
-}
 
 function treeToArray(tree)
 {
-	if (tree.length == 0)
+	if (tree == null)
 		return []
 	else 
-		return treeToArray(tree[1]).concat(tree[0],treeToArray(tree[2]))
-}
-
-function treeSort(arr)
-{
-	var len = arr.length
-	var tree = []
-
-	for (var i = 0; i < len; i++)
-		addItem(tree,arr[i])
-
-	arr = treeToArray(tree)
-
-	return arr
-}
+		return treeToArray(tree.left).concat(tree.data,treeToArray(tree.right))
+}    
     
+    function Node(data, left, right) { 
+    this.data = data;
+    this.left = left; 
+    this.right = right; 
+} 
+
+function BST() { 
+    this.root = null; 
+    this.insert = insert;  
+} 
+function insert(data) { 
+    var n= new Node(data, null, null); 
+    if (this.root == null){ 
+        this.root = n; 
+    } else { 
+        var current = this.root; 
+        var parent; 
+        while (true){ 
+            parent = current; 
+            if (data < current.data) { 
+                current = current.left; 
+                if (current == null){ 
+                    parent.left = n; 
+                    break; 
+                } 
+            } else { 
+                current = current.right; 
+                if (current == null){ 
+                    parent.right = n; 
+                    break; 
+                } 
+            } 
+        } 
+    } 
+} 
+
     function in12(){
-var mas=[]; 
+var mas=[],m0=[]; 
     mas=inner();
-    mas=treeSort(mas);
+      var bt=new BST;
+      for(i=0;i<mas.length;i++){bt.insert(mas[i]);}
+      mas=treeToArray(bt.root);
         document.getElementById("cell12").value = mas;
 }
     //Bogo
